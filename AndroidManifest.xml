@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.louisa.savemore">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ResetPasswordActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:parentActivityName=".HomePage" />
+        <activity
+            android:name=".HomePage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddSharedCost" />
+        <activity android:name=".AddSavingGoals" />
+        <activity android:name=".EditSharedCost" />
+        <activity android:name=".EditSavingGoals" />
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".SavingsGoalHome" />
+        <activity android:name=".EmailNotification" />
+        <activity android:name=".SharedCostHome"></activity>
+    </application>
+
+</manifest>
