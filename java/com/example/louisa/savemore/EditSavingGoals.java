@@ -63,6 +63,7 @@ public class EditSavingGoals extends BaseActivity {
         name.setText(savingGoals.getGoalName());
         email.setText(savingGoals.getEmail());
         price.setText(String.valueOf(savingGoals.getTotal_amount()));
+        description.setText(savingGoals.getDescription());
 
     }
 
@@ -87,7 +88,7 @@ public class EditSavingGoals extends BaseActivity {
             goalName = name.getText().toString();
             receiverEmail = email.getText().toString();
             descriptionSave = description.getText().toString();
-            amountToShare = Float.parseFloat(price.getText().toString());
+            totalAmount = Float.parseFloat(price.getText().toString());
             //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
             saveCosts();
@@ -96,13 +97,14 @@ public class EditSavingGoals extends BaseActivity {
 
 
     private void saveCosts() {
-        amountToShare = amountToShare / 2;
+        amountToShare = totalAmount / 2;
         SavingGoals savingGoals = new SavingGoals();
         savingGoals.setEmail(receiverEmail);
         savingGoals.setGoalName(goalName);
         savingGoals.setGoalAmount(amountToShare);
         savingGoals.setDescription(descriptionSave);
         savingGoals.setSender_email(senderEmail);
+        savingGoals.setTotal_amount(totalAmount);
         senderEmail = cleanEmail(senderEmail);
 
         Map<String, Object> shareValues = savingGoals.toMap();

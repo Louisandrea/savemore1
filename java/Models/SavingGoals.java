@@ -89,7 +89,7 @@ public class SavingGoals implements Serializable {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("goal_name", goalName);
+        result.put("goalName", goalName);
         result.put("email", email);
         result.put("sender_email", sender_email);
         result.put("goalAmount", goalAmount);

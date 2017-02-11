@@ -29,6 +29,8 @@ public class SavingsGoalHome extends BaseActivity {
 
     @Bind(R.id.title)
     TextView title;
+    @Bind(R.id.descriptionSave)
+    TextView description;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
     @Bind(R.id.update_amount)
@@ -51,7 +53,7 @@ public class SavingsGoalHome extends BaseActivity {
 
 
         key = getIntent().getExtras().getString("key");
-        //  savingGoals = (SavingGoals) getIntent().getExtras().getSerializable("item");
+       // savingGoals = (SavingGoals) getIntent().getExtras().getSerializable("item");
         databaseRef = mDatabase.getReference("savingGoals");
         //displayContent();
 
@@ -102,7 +104,8 @@ public class SavingsGoalHome extends BaseActivity {
     }
 
     private void displayContent() {
-        title.setText(savingGoals.getDescription() + " " + savingGoals.getGoalAmount());
+        title.setText(savingGoals.getDescription() + " /n" + savingGoals.getGoalAmount());
+        description.setText(savingGoals.getGoalName());
         calculatePercentage();
     }
 

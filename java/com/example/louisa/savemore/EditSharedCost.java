@@ -66,7 +66,9 @@ public class EditSharedCost extends BaseActivity {
     private void displayContent() {
         name.setText(sharedCost.getName());
         email.setText(sharedCost.getEmail());
-        price.setText(String.valueOf(sharedCost.getPrice()));
+        price.setText(String.valueOf(sharedCost.getTotal_amount()));
+        friendsInvolve.setText(sharedCost.getFriend_involve());
+
 
     }
 
