@@ -104,7 +104,7 @@ public class SavingsGoalHome extends BaseActivity {
     }
 
     private void displayContent() {
-        title.setText(savingGoals.getDescription() + " /n" + savingGoals.getGoalAmount());
+        title.setText(savingGoals.getDescription() + "   " + "£" + savingGoals.getGoalAmount());
         description.setText(savingGoals.getGoalName());
         calculatePercentage();
     }
