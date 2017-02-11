@@ -90,6 +90,7 @@ public class AddSharedCost extends BaseActivity {
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
+    private String folder_main = "Receipts";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,21 +198,27 @@ public class AddSharedCost extends BaseActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
 
-        FileOutputStream fo;
+        String path = Environment.getExternalStorageDirectory().toString();
+
+        String filename = path + "/" + folder_main + "/" + String.format("%d.jpg", System.currentTimeMillis());
+
+        FileOutputStream fo = null;
         try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
+            fo = new FileOutputStream(filename);
             fo.write(bytes.toByteArray());
             fo.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }finally {
 
+        }
         imageView.setImageBitmap(thumbnail);
         imageView.setVisibility(View.VISIBLE);
     }
