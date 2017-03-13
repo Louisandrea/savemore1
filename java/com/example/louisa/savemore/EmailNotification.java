@@ -43,25 +43,30 @@ public class EmailNotification extends Activity {
             public void onClick(View v)
             {
 
-                String to = textTo.getText().toString();
-                String subject = textSubject.getText().toString();
-                String message = textMessage.getText().toString();
-
-                Intent intent = new Intent(EmailNotification.this, HomePage.class);
-
-                intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
-                //email.putExtra(Intent.EXTRA_CC, new String[]{ to});
-                //email.putExtra(Intent.EXTRA_BCC, new String[]{to});
-                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(Intent.EXTRA_TEXT, message);
-
-                //need this to prompts email client only
-                intent.setType("message/rfc822");
-
-                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
-
+        sendEmail();
             }
         });
+    }
+
+    private void sendEmail ()
+    {
+
+        String to = textTo.getText().toString();
+        String subject = textSubject.getText().toString();
+        String message = textMessage.getText().toString();
+
+        Intent intent = new Intent(EmailNotification.this, HomePage.class);
+
+        intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
+        //email.putExtra(Intent.EXTRA_CC, new String[]{ to});
+        //email.putExtra(Intent.EXTRA_BCC, new String[]{to});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+
+        //need this to prompts email client only
+        intent.setType("message/rfc822");
+
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 }
