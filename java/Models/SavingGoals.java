@@ -22,6 +22,7 @@ public class SavingGoals implements Serializable {
     float remainAmount =0;
     float percentage = 0;
 
+    //Constructors
     public SavingGoals() {
 
     }
@@ -105,4 +106,4 @@ public class SavingGoals implements Serializable {
     }//End of Mapping
 
 
-}
+}//End of class

@@ -36,6 +36,7 @@
                 android:inputType="textEmailAddress"
                 android:textColor="#4E342E"
                 android:textColorHint="#EF6C00" />
+
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -74,8 +75,6 @@
             android:textAllCaps="false"
             android:textColor="#4E342E" />
 
-        <!-- Link to Login Screen -->
-
         <Button
             android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
@@ -95,4 +94,5 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:visibility="gone" />
+
 </android.support.design.widget.CoordinatorLayout>

@@ -39,7 +39,8 @@
         <activity android:name=".SavingsGoalHome" />
         <activity android:name=".EmailNotification" />
         <activity android:name=".SharedCostHome" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".Help"></activity>
     </application>
 
 </manifest>

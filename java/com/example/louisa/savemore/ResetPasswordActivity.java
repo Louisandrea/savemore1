@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
+
+    //Bind layout with activity
     @Bind(R.id.email)
     EditText inputEmail;
     @Bind(R.id.btn_reset_password)
@@ -29,16 +31,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     String email;
 
-    private FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
         ButterKnife.bind(this);
-
-        auth = FirebaseAuth.getInstance();
 
         setOnClickEvent();
 
@@ -79,7 +77,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     //Method resetPassword
     private void resetPassword()
     {
-        auth.sendPasswordResetEmail(email)
+        mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -94,4 +92,4 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 });
     }//End of method reset password
 
-}
+}//End of class

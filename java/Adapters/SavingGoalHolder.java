@@ -14,12 +14,12 @@ public class SavingGoalHolder extends RecyclerView.ViewHolder {
     View mView;
     Context mContext;
 
-
+    //Connect with RecyclerView in Home Page
     public SavingGoalHolder(View itemView) {
         super(itemView);
         mView = itemView;
         mContext = mView.getContext();
-    }
+    }//End of SavingGoalHolder method
 
     //Set content for RecyclerView
     public void setContent(SavingGoals savingGoals) {

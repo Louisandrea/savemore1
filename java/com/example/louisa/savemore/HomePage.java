@@ -131,6 +131,9 @@ public class HomePage extends BaseActivity {
                             case R.id.nav_settings:
                                 startActivity(new Intent(HomePage.this, MainActivity.class));
                                 break;
+                            case R.id.nav_help:
+                                startActivity(new Intent(HomePage.this, Help.class));
+                                break;
 
                         }
                         return true;
@@ -447,7 +450,6 @@ public class HomePage extends BaseActivity {
 
         DatabaseReference databaseRefSaving = mDatabase.getReference("savingGoals");
         savingGoalsQuery = databaseRefSaving.orderByChild(loginUserEmail).equalTo(true).limitToLast(100);
-
 
     }//End of method
 

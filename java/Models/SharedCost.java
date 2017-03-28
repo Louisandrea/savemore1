@@ -11,20 +11,12 @@ public class SharedCost implements Serializable {
     String name;
     String email;
     String sender_email;
-
-
-    public String getFriend_involve() {
-        return friend_involve;
-    }
-
-    public void setFriend_involve(String friend_involve) {
-        this.friend_involve = friend_involve;
-    }
-
     String friend_involve;
+
     float price;
     float total_amount;
 
+    //Constructors
     public SharedCost() {
 
     }
@@ -44,8 +36,6 @@ public class SharedCost implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     public float getPrice() {
         return price;
@@ -71,6 +61,14 @@ public class SharedCost implements Serializable {
         this.total_amount = total_amount;
     }
 
+    public String getFriend_involve() {
+        return friend_involve;
+    }
+
+    public void setFriend_involve(String friend_involve) {
+        this.friend_involve = friend_involve;
+    }
+
 
     //Mapping the value to Firebase
     @Exclude
@@ -85,7 +83,7 @@ public class SharedCost implements Serializable {
         result.put("timestamp", ServerValue.TIMESTAMP);
 
         return result;
-    }
+    }//End of Map method
 
 
-}
+}//End of class

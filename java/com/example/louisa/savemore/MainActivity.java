@@ -18,8 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity{
 
+    //Binding layout with activity
     @Bind(R.id.change_email_button)
     Button btnChangeEmail;
     @Bind(R.id.change_password_button)
@@ -49,19 +50,12 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
-    private FirebaseAuth.AuthStateListener authListener;
-    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    public FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
@@ -71,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //Method setOnClickEvent
     private void setOnClickEvent() {
+
         currentUser();
+
         //When user click on change email button
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         remove.setVisibility(View.GONE);
 
         //Get Current user
-        authListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -234,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         //Make sure no space in between
         if (!oldEmail.getText().toString().trim().equals("")) {
             //Firebase auth instance method
-            auth.sendPasswordResetEmail(oldEmail.getText().toString().trim())
+            mAuth.sendPasswordResetEmail(oldEmail.getText().toString().trim())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -305,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Sign Out Method
     public void signOut() {
-        auth.signOut();
+        mAuth.signOut();
     }
 
     @Override
@@ -319,15 +315,15 @@ public class MainActivity extends AppCompatActivity {
     //Method for Auth Listener onStart
     public void onStart() {
         super.onStart();
-        auth.addAuthStateListener(authListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }//End of method onStart
 
     @Override
     //Method for Auth Listener onStop
     public void onStop() {
         super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }//End of method onStop
 

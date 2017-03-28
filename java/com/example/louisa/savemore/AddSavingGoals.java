@@ -44,6 +44,7 @@ public class AddSavingGoals extends BaseActivity {
     @Bind(R.id.btn_save)
     Button btn_save;
 
+    //Database instances
     DatabaseReference databaseRef;
 
     String key;
@@ -65,11 +66,11 @@ public class AddSavingGoals extends BaseActivity {
         key = databaseRef.push().getKey();
         setClickEvents();
 
-
     }
 
     //Method click event
     private void setClickEvents() {
+        //When user click on save button
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +78,8 @@ public class AddSavingGoals extends BaseActivity {
             }
         });
 
-
     }//End of click event method
+
 
     //Method for saving the details
     private void processSave() {
@@ -91,10 +92,8 @@ public class AddSavingGoals extends BaseActivity {
             receiverEmail = email.getText().toString();
             description = descriptionSave.getText().toString();
             totalAmount = Float.parseFloat(price.getText().toString());
-            //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
             saveCosts();
-            //saveCosts(receiverEmail,productName,senderEmail,amountToShare);
         }
     }//End of process save method
 
@@ -117,6 +116,8 @@ public class AddSavingGoals extends BaseActivity {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, shareValues);
 
+
+        //Firebase method, Update values
         databaseRef.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -153,4 +154,4 @@ public class AddSavingGoals extends BaseActivity {
             return true;
         }
     }//End of the validation method
-}
+}//End of class

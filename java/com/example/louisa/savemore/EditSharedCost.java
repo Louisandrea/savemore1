@@ -17,13 +17,14 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import Utilities.RoundUpMethod;
 import Models.SharedCost;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
 public class EditSharedCost extends BaseActivity {
+
+    //Bind layout with acivity
     @Bind(R.id.name)
     EditText name;
     @Bind(R.id.email)
@@ -35,6 +36,7 @@ public class EditSharedCost extends BaseActivity {
     @Bind(R.id.btn_save)
     Button btn_save;
 
+    //Shared cost object from share cost in model package
     SharedCost sharedCost;
     DatabaseReference databaseRef;
 
@@ -44,6 +46,7 @@ public class EditSharedCost extends BaseActivity {
     String productName;
     String receiverEmail;
 
+    //Array to store list of people that share the cost
     String receipients[];
     String otherFriends[];
 

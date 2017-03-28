@@ -9,4 +9,8 @@
             android:title="Settings"
             android:icon ="@drawable/ic_settings_black"/>
 
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help"
+            android:icon ="@drawable/ic_help_outline_black"/>
 </menu>

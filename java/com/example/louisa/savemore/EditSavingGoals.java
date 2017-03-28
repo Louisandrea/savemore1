@@ -23,6 +23,8 @@ import butterknife.ButterKnife;
 
 
 public class EditSavingGoals extends BaseActivity {
+
+    //Bind layout with activity
     @Bind(R.id.name)
     EditText name;
     @Bind(R.id.email)
@@ -34,6 +36,7 @@ public class EditSavingGoals extends BaseActivity {
     @Bind(R.id.btn_save)
     Button btn_save;
 
+    //Saving goals object from saving goals class in models package
     SavingGoals savingGoals;
     DatabaseReference databaseRef;
 
@@ -114,6 +117,7 @@ public class EditSavingGoals extends BaseActivity {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, shareValues);
 
+        //Firebase method update values
         databaseRef.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

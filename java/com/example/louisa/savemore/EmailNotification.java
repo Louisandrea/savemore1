@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 
 public class EmailNotification extends Activity {
 
+    //Bind layout with activity
     @Bind(R.id.editTextTo)
     EditText textTo;
     @Bind(R.id.editTextSubject)
@@ -34,20 +35,21 @@ public class EmailNotification extends Activity {
 
     }
 
+    //setOnClick method
     private void setOnClickEvent()
     {
+        //When user click on send button
         buttonSend.setOnClickListener(new OnClickListener()
         {
-
             @Override
             public void onClick(View v)
             {
-
-        sendEmail();
+                sendEmail();
             }
         });
-    }
+    }//End of setOnClick method
 
+    //Send email method
     private void sendEmail ()
     {
 
@@ -59,14 +61,12 @@ public class EmailNotification extends Activity {
 
         intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
-        //email.putExtra(Intent.EXTRA_CC, new String[]{ to});
-        //email.putExtra(Intent.EXTRA_BCC, new String[]{to});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
-        //need this to prompts email client only
+        //Let the client know there is a message body in it
         intent.setType("message/rfc822");
 
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
-    }
-}
+    }//End of send email method
+}//End of class

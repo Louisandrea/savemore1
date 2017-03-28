@@ -33,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SavingsGoalHome extends BaseActivity {
-
+    //Binding the layout with activity
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.descriptionSave)
@@ -49,6 +49,7 @@ public class SavingsGoalHome extends BaseActivity {
     @Bind(R.id.update)
     EditText update;
 
+    //Saving goals object from Saving Goals class in models package
     SavingGoals savingGoals;
     DatabaseReference databaseRef;
     String key;
@@ -178,4 +179,4 @@ public class SavingsGoalHome extends BaseActivity {
             return true;
         }
     }//End of validation method
-}
+}//End of class

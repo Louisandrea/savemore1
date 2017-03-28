@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 
 public class SharedCostHome extends BaseActivity {
 
+    //Bind layout with activity
     @Bind(R.id.price)
     TextView price;
     @Bind(R.id.list_friend)
@@ -44,6 +45,7 @@ public class SharedCostHome extends BaseActivity {
     @Bind(R.id.btn_back)
     Button back;
 
+    //SharedCost object from share cost in models package
     SharedCost sharedCost;
     DatabaseReference databaseRef;
 
@@ -66,7 +68,9 @@ public class SharedCostHome extends BaseActivity {
         setClickEvent();
     }
 
+    //SetClickEvent method
     private void setClickEvent(){
+        //When user click on back button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +78,7 @@ public class SharedCostHome extends BaseActivity {
             }
         });
 
-    }
+    }//End of setClickEvent method
 
 
     //Method displayContent
@@ -100,6 +104,4 @@ public class SharedCostHome extends BaseActivity {
         });
     }//End of fetchUpdate method
 
-
-
-}
+}//End of class

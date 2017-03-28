@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends BaseActivity {
 
     //Bind layout component with activity variable
     @Bind(R.id.email)
@@ -35,17 +35,14 @@ public class SignUpActivity extends AppCompatActivity {
     Button btnResetPassword;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
     String email;
     String password;
-    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
 
         ButterKnife.bind(this);
 
@@ -55,6 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     //Method set on click event
     private void setOnClickEvent() {
+        //When user click on reset password button
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on sign in button
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on sign up button
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
     //Method signUp
     private void signUp () {
         //Method create user with email and password
-        auth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

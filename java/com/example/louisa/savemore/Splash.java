@@ -30,6 +30,6 @@ public class Splash extends Activity {
                 finish();
             }
         }, SPLASH_TIME_OUT);
-    }
+    }//End onCreate
 
-}
+}//End of class

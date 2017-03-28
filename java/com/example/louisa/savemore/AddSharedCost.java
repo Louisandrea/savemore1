@@ -62,6 +62,7 @@ public class AddSharedCost extends BaseActivity {
     @Bind(R.id.btn_capture)
     ImageButton btn_capture;
 
+    //Get database instances
     DatabaseReference databaseRef;
 
     String key;
@@ -97,6 +98,7 @@ public class AddSharedCost extends BaseActivity {
 
     //Method on click event
     private void setClickEvents() {
+        //When user click on save button
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +106,7 @@ public class AddSharedCost extends BaseActivity {
             }
         });
 
+        //When user click on capture button (Camera icon)
         btn_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -282,6 +285,7 @@ public class AddSharedCost extends BaseActivity {
                     Toast.makeText(getApplicationContext(), "Cost Shared", Toast.LENGTH_LONG).show();
                     databaseRef.child(key).child(senderEmail).setValue(true);
 
+                    //Counter to count number of Firebase users to share cost with
                     for (String receipient : receipients) {
                         receiverEmail = cleanEmail(receipient);
                         databaseRef.child(key).child(receiverEmail).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -295,6 +299,7 @@ public class AddSharedCost extends BaseActivity {
                         finish();
                     }
 
+                    //Counter to count number of other friends to share cost with
                     for (final String otherFriend : otherFriends) {
                         databaseRef.child(key).child(friends).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

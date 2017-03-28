@@ -14,13 +14,13 @@ public class SharedCostHolder extends RecyclerView.ViewHolder
     View mView;
     Context mContext;
 
-
+    //Connect with Recycler View in Home page
     public SharedCostHolder(View itemView) {
         super(itemView);
 
         mView = itemView;
         mContext = mView.getContext();
-    }
+    }//End of SharedCostHolder method
 
     //Set content for RecyclerView
     public void setContent(SharedCost sharedCost) {

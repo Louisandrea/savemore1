@@ -20,8 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
+    //Bind layout with activity
     @Bind(R.id.email)
     EditText inputEmail;
     @Bind(R.id.password)
@@ -38,27 +39,20 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
 
-    private FirebaseAuth auth;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        //Get Firebase Auth instance
-        auth = FirebaseAuth.getInstance();
-
         //If the user login direct to home page
-        if (auth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, HomePage.class));
             finish();
         }
 
         //Call method for on click event
         setOnClickEvent();
-
-
     }
 
     //Method for all on click event
@@ -79,9 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
-
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
 
         //When user click on login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 signIn();
 
-
             }
         });
 
@@ -113,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     //Method signIn
     private void signIn() {
         //Authenticate user instance
-        auth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -139,4 +129,4 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
     }//End method signIn
-}
+}//End of class
