@@ -1,5 +1,6 @@
 package Models;
 
+import com.firebase.client.utilities.Utilities;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ServerValue;
 
@@ -7,9 +8,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Louisa on 02/02/2017.
- */
 
 public class SavingGoals implements Serializable {
 
@@ -21,6 +19,7 @@ public class SavingGoals implements Serializable {
 
     float goalAmount;
     float total_amount;
+    float remainAmount =0;
     float percentage = 0;
 
     public SavingGoals() {
@@ -84,10 +83,13 @@ public class SavingGoals implements Serializable {
         this.total_amount = total_amount;
     }
 
+    public float getRemainAmount(){ return remainAmount; }
 
-    //Mapping value to database
-    @Exclude
+    public void setRemainAmount(float remainAmount) { this.remainAmount = remainAmount; }
+
+    //Mapping values to Firebase
     public Map<String, Object> toMap() {
+
         HashMap<String, Object> result = new HashMap<>();
         result.put("goalName", goalName);
         result.put("email", email);
@@ -95,11 +97,12 @@ public class SavingGoals implements Serializable {
         result.put("goalAmount", goalAmount);
         result.put("description", description);
         result.put("percentage", percentage);
+        result.put("remainAmount", remainAmount);
         result.put("total_amount", total_amount);
         result.put("timestamp", ServerValue.TIMESTAMP);
 
         return result;
-    }
+    }//End of Mapping
 
 
 }

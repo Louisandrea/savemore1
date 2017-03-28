@@ -69,7 +69,8 @@
             android:layout_margin="15dp"
             android:background="@drawable/outer_progress"
             android:padding="10dp"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,7 +78,8 @@
                 android:background="@drawable/inner_progress"
                 android:padding="5dp"
                 android:orientation="horizontal"
-                android:layout_height="25dp">
+                android:layout_height="25dp"
+                android:layout_weight="1.55">
 
                 <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
@@ -122,6 +124,16 @@
             android:ems="10"
             android:id="@+id/update"
             android:layout_below="@+id/progress_layout"/>
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/btn_back"
+            android:textColor="#4E342E"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
 
 
     </RelativeLayout>

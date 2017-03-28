@@ -47,7 +47,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     //Method on Click event activity
     private void setOnClickEvent()
     {
-
+        //When user click on back link
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +55,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on reset link
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +76,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     }//End of method
 
+    //Method resetPassword
     private void resetPassword()
     {
         auth.sendPasswordResetEmail(email)
@@ -90,6 +92,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                     }
                 });
-    }
+    }//End of method reset password
 
 }

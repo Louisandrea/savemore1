@@ -19,8 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    public FirebaseAuth auth;
+
     @Bind(R.id.change_email_button)
     Button btnChangeEmail;
     @Bind(R.id.change_password_button)
@@ -49,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
     EditText newPassword;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
     private FirebaseAuth.AuthStateListener authListener;
+    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on change email button
         changeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on change password button
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on send reset password email button
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     }//End of on click method
 
+    //Method currentUser
     private void currentUser()
     {
         //Hide all the buttons
@@ -181,16 +187,16 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
+                    //If user aut state changed to null - Login activity will be launched
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
             }
         };
 
-    }
+    }//End of method current user
 
+    //Method change password
     private void changePassword()
     {
         if (user != null && !newPassword.getText().toString().trim().equals("")) {
@@ -198,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 newPassword.setError("Password too short, enter minimum 6 characters");
                 progressBar.setVisibility(View.GONE);
             } else {
+                //Update the password based on user's auth info in Firebase
                 user.updatePassword(newPassword.getText().toString().trim())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -218,11 +225,15 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
 
-    }
+    }//End of method change password
 
+
+    //Method send reset password email
     private void sendResetEmail()
     {
+        //Make sure no space in between
         if (!oldEmail.getText().toString().trim().equals("")) {
+            //Firebase auth instance method
             auth.sendPasswordResetEmail(oldEmail.getText().toString().trim())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -241,11 +252,13 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
 
-    }
+    }//End of method send reset password email
 
+    //Method removeUser
     private void removeUser()
     {
         if (user != null) {
+            //Delete user information
             user.delete()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -263,11 +276,13 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
 
-    }
+    }//End of method removeUser
 
+    //Method changeEmail
     private void changeEmail()
     {
         if (user != null && !newEmail.getText().toString().trim().equals("")) {
+            //Update email method
             user.updateEmail(newEmail.getText().toString().trim())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -286,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
             newEmail.setError("Enter email");
             progressBar.setVisibility(View.GONE);
         }
-    }
+    }//End of method Change Email
 
     //Sign Out Method
     public void signOut() {
@@ -294,22 +309,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    //Method for Auth Listener onResume
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
-    }
+    }//End of method onResume
 
     @Override
+    //Method for Auth Listener onStart
     public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);
-    }
+    }//End of method onStart
 
     @Override
+    //Method for Auth Listener onStop
     public void onStop() {
         super.onStop();
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
-    }
-}
+    }//End of method onStop
+
+}//End of class

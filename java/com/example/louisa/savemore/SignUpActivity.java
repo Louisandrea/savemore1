@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    //Bind layout component with activity variable
     @Bind(R.id.email)
     EditText inputEmail;
     @Bind(R.id.password)
@@ -34,7 +35,8 @@ public class SignUpActivity extends AppCompatActivity {
     Button btnResetPassword;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
-
+    String email;
+    String password;
     private FirebaseAuth auth;
 
     @Override
@@ -70,54 +72,64 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                email = inputEmail.getText().toString().trim();
+                password = inputPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
+
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(password)){
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                    return;
+                    return ;
                 }
 
                 if (password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
-                    return;
+                    return ;
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
-                //create user
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignUpActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(SignUpActivity.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    startActivity(new Intent(SignUpActivity.this, HomePage.class));
-                                    finish();
-                                }
-                            }
-                        });
+
+                signUp();
 
             }
         });
 
     }//End of on click method
 
+    //Method signUp
+    private void signUp () {
+        //Method create user with email and password
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Toast.makeText(SignUpActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        //If not successful, message will be displayed
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this, "Authentication failed." + task.getException(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        //If task is successful, the auth state listener will be notified
+                        else {
+                            startActivity(new Intent(SignUpActivity.this, HomePage.class));
+                            finish();
+                        }
+                    }
+                });
+    }//End signUp method
+
+
     @Override
+    //Method onResume for Auth listener
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
-    }
-}
+    }//End of method onResume
+
+}//End of class

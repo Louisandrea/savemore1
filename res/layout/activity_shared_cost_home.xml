@@ -49,37 +49,18 @@
                 android:textColor="#000000"
                 android:textSize="24dp"/>
 
-
-            <!--<TextView-->
-            <!--android:id="@+id/descriptionSave"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="#000000"-->
-            <!--android:text="Visit Disney Land during Christmas"/>-->
-
         </LinearLayout>
 
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:text="@string/btn_back"
+        android:textColor="#4E342E" />
 
-    <!--<EditText-->
-        <!--android:id="@+id/friendsInvolve"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Friends Involve"-->
-        <!--android:inputType="textMultiLine"-->
-        <!--android:maxLines="2" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/btn_save"-->
-        <!--style="?android:textAppearanceSmall"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="16dp"-->
-        <!--android:background="#FFC107"-->
-        <!--android:text="@string/action_save"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textStyle="bold" />-->
-    </LinearLayout>
+</LinearLayout>

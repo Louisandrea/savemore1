@@ -6,7 +6,7 @@ import android.os.Handler;
 
 public class Splash extends Activity {
 
-    // Splash screen timer
+    // Splash Screen Duration
     private static int SPLASH_TIME_OUT = 3000;
 
     @Override
@@ -23,12 +23,10 @@ public class Splash extends Activity {
 
             @Override
             public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
+                //Executed once and launch Login activity
                 Intent i = new Intent(Splash.this, LoginActivity.class);
                 startActivity(i);
-
-                // close this activity
+                //End Splash Activity
                 finish();
             }
         }, SPLASH_TIME_OUT);

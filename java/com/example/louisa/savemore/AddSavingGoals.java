@@ -106,6 +106,7 @@ public class AddSavingGoals extends BaseActivity {
         savingGoals.setEmail(receiverEmail);
         savingGoals.setGoalName(goalName);
         savingGoals.setGoalAmount(amountToShare);
+        savingGoals.setRemainAmount(amountToShare);
         savingGoals.setSender_email(senderEmail);
         savingGoals.setTotal_amount(totalAmount);
         savingGoals.setDescription(description);

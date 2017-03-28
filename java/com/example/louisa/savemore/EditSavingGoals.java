@@ -36,11 +36,13 @@ public class EditSavingGoals extends BaseActivity {
 
     SavingGoals savingGoals;
     DatabaseReference databaseRef;
+
     String key;
     String senderEmail;
     String goalName;
     String receiverEmail;
     String descriptionSave;
+
     float amountToShare;
     float totalAmount;
 
@@ -59,16 +61,19 @@ public class EditSavingGoals extends BaseActivity {
         setClickEvents();
     }
 
+    //Method displayContent
     private void displayContent() {
         name.setText(savingGoals.getGoalName());
         email.setText(savingGoals.getEmail());
         price.setText(String.valueOf(savingGoals.getTotal_amount()));
         description.setText(savingGoals.getDescription());
 
-    }
+    }//End of displayContent method
 
 
+    //Method setClickEvents
     private void setClickEvents() {
+        //When user click on save button
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,26 +81,24 @@ public class EditSavingGoals extends BaseActivity {
             }
         });
 
-    }
+    }//End ofsetClickEvents method
 
 
+    //Method processSave
     private void processSave() {
 
         if (validateFields()) {
-            //String loginUserId = mAuth.getCurrentUser();
             senderEmail = mAuth.getCurrentUser().getEmail();
-
             goalName = name.getText().toString();
             receiverEmail = email.getText().toString();
             descriptionSave = description.getText().toString();
             totalAmount = Float.parseFloat(price.getText().toString());
-            //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
             saveCosts();
         }
-    }
+    }//End of processSave method
 
-
+    //Method saveCosts - Update values
     private void saveCosts() {
         amountToShare = totalAmount / 2;
         SavingGoals savingGoals = new SavingGoals();
@@ -138,9 +141,10 @@ public class EditSavingGoals extends BaseActivity {
             }
         });
         databaseRef.setPriority(ServerValue.TIMESTAMP);
-    }
+    }//End of saveCosts method
 
 
+    //Method validateFields
     private boolean validateFields() {
         if (TextUtils.isEmpty(name.getText().toString())) {
             name.setError("Please enter a name");
@@ -154,5 +158,5 @@ public class EditSavingGoals extends BaseActivity {
         } else {
             return true;
         }
-    }
-}
+    }//End of validateFields method
+}//End of class

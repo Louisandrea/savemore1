@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     //Method for all on click event
     private void setOnClickEvent()
     {
+        //When user click on sign up link
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //When user click on reset link
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
+        //When user click on login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,25 +110,27 @@ public class LoginActivity extends AppCompatActivity {
 
     }//End of method on click
 
-    private void signIn()
-    {
-        //authenticate user
+    //Method signIn
+    private void signIn() {
+        //Authenticate user instance
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
                         progressBar.setVisibility(View.GONE);
+                        //If failed, message will be shown
                         if (!task.isSuccessful()) {
-                            // there was an error
+                            // If password too short
                             if (password.length() < 6) {
                                 inputPassword.setError(getString(R.string.minimum_password));
-                            } else {
+                            }
+                            //If Firebase cannot find the user account
+                            else {
                                 Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                             }
-                        } else {
+                        }
+                        //If success, direct user to home page
+                        else {
                             Intent intent = new Intent(LoginActivity.this, HomePage.class);
                             startActivity(intent);
                             finish();
@@ -133,5 +138,5 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-    }
+    }//End method signIn
 }

@@ -13,10 +13,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import Models.SavingGoals;
+import Utilities.RoundUpMethod;
 import Models.SharedCost;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,9 +43,12 @@ public class EditSharedCost extends BaseActivity {
     String senderEmail;
     String productName;
     String receiverEmail;
+
     String receipients[];
     String otherFriends[];
+
     int count = 1;
+
     float amountToShare;
     float totalAmount;
 
@@ -63,16 +67,16 @@ public class EditSharedCost extends BaseActivity {
         setClickEvents();
     }
 
+    //Method displayContent
     private void displayContent() {
         name.setText(sharedCost.getName());
         email.setText(sharedCost.getEmail());
         price.setText(String.valueOf(sharedCost.getTotal_amount()));
         friendsInvolve.setText(sharedCost.getFriend_involve());
 
+    }//End of displayContent method
 
-    }
-
-
+    //Method setClickEvents
     private void setClickEvents() {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,32 +85,36 @@ public class EditSharedCost extends BaseActivity {
             }
         });
 
-    }
+    }//End of method setClickEvents
 
-
+    //Method processSave
     private void processSave() {
 
         if (validateFields()) {
-            //String loginUserId = mAuth.getCurrentUser();
             senderEmail = mAuth.getCurrentUser().getEmail();
-
             productName = name.getText().toString();
             receiverEmail = email.getText().toString();
             totalAmount = Float.parseFloat(price.getText().toString());
             friends = friendsInvolve.getText().toString();
-            //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
             saveCosts();
         }
-    }
+    }//End of method processSave
 
-
+    //Method saveCosts
     private void saveCosts() {
+        //Each receipients will be splitted by ","
         receipients = receiverEmail.split(",");
         otherFriends = friends.split(",");
-        amountToShare = totalAmount / (receipients.length + otherFriends.length);
-        amountToShare = Math.round(amountToShare);
 
+        //Round up method
+        Utilities.RoundUpMethod roundUp = new Utilities.RoundUpMethod();
+
+        //Divide based on the size of array
+        amountToShare = totalAmount / (receipients.length + otherFriends.length);
+        amountToShare = roundUp.roundUpMethod(amountToShare, 2, BigDecimal.ROUND_HALF_UP);
+
+        //Set data to model
         SharedCost sharedCost = new SharedCost();
         sharedCost.setEmail(receiverEmail);
         sharedCost.setName(productName);
@@ -115,8 +123,10 @@ public class EditSharedCost extends BaseActivity {
         sharedCost.setTotal_amount(totalAmount);
         sharedCost.setFriend_involve(friends);
 
+        //Replace "." to ""
         senderEmail = cleanEmail(senderEmail);
 
+        //Map data to Firebase
         Map<String, Object> shareValues = sharedCost.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, shareValues);
@@ -125,10 +135,12 @@ public class EditSharedCost extends BaseActivity {
         databaseRef.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                //If update task successful, Firebase update fields
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Cost Shared", Toast.LENGTH_LONG).show();
                     databaseRef.child(key).child(senderEmail).setValue(true);
 
+                    //Counter to count how many person to divide
                     for (String receipient : receipients) {
                         receiverEmail = cleanEmail(receipient);
                         databaseRef.child(key).child(receiverEmail).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -143,6 +155,7 @@ public class EditSharedCost extends BaseActivity {
                         finish();
                     }
 
+                    //Counter to count how many other friends to divide
                     for (final String otherFriend : otherFriends) {
                         databaseRef.child(key).child(friends).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -159,7 +172,9 @@ public class EditSharedCost extends BaseActivity {
                         finish();
                     }
 
-                } else {
+                }
+                //If failed, message will be displayed
+                else {
                     Toast.makeText(getApplicationContext(), "Unable to save at the moment", Toast.LENGTH_LONG).show();
                 }
             }
@@ -167,6 +182,7 @@ public class EditSharedCost extends BaseActivity {
         databaseRef.setPriority(ServerValue.TIMESTAMP);
     }//End of sort shared cost value
 
+    //Method validateFields
     private boolean validateFields() {
         if (TextUtils.isEmpty(name.getText().toString())) {
             email.setError("Please enter a name");
@@ -183,5 +199,5 @@ public class EditSharedCost extends BaseActivity {
         } else {
             return true;
         }
-    }
-}
+    } //End of validateFields method
+}//End of class

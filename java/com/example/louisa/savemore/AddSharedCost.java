@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -19,12 +17,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -33,19 +29,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.*;
-import java.sql.Array;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +41,7 @@ import com.google.firebase.database.ServerValue;
 
 import Models.SharedCost;
 import Utilities.Utility;
+import Utilities.RoundUpMethod;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -79,15 +68,16 @@ public class AddSharedCost extends BaseActivity {
     String friends;
     String otherFriends [];
     String receipients [];
-    // ArrayList<String> otherFriends = new ArrayList<>();
+
     String senderEmail;
     String productName;
     String receiverEmail;
-    // ArrayList <String> receipients = new ArrayList<>();
+
     int count = 1;
     float amountToShare;
     float totalAmount;
 
+    //Image capture / upload variables
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
     private String folder_main = "Receipts";
@@ -101,9 +91,8 @@ public class AddSharedCost extends BaseActivity {
 
         databaseRef = mDatabase.getReference("sharedCost");
         key = databaseRef.push().getKey();
+
         setClickEvents();
-
-
     }
 
     //Method on click event
@@ -122,9 +111,10 @@ public class AddSharedCost extends BaseActivity {
             }
         });
 
-    }
+    }//End of method on click event
 
     @Override
+    //Method onRequestPermissionResult
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
@@ -138,11 +128,11 @@ public class AddSharedCost extends BaseActivity {
                 }
                 break;
         }
-    }
+    }//End of method onRequestPermissionResult
 
+    //Method selectImage
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddSharedCost.this);
         builder.setTitle("Add Your Receipt!");
@@ -167,32 +157,35 @@ public class AddSharedCost extends BaseActivity {
             }
         });
         builder.show();
-    }
+    }//End of method selectImage
 
+    //Method galleryIntent
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
-    }
+    }//End of method galleryIntent
 
+    //Method cameraIntent
     private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
-    }
+    }//End of method cameraIntent
 
     @Override
+    //Method onActivityResult
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
         }
-    }
+    }//End of method onActivityResult
 
+    //Method onCaptureImageResult
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -221,9 +214,10 @@ public class AddSharedCost extends BaseActivity {
         }
         imageView.setImageBitmap(thumbnail);
         imageView.setVisibility(View.VISIBLE);
-    }
+    }//End of method onCaptureImageResult
 
     @SuppressWarnings("deprecation")
+    //Method onSelectFromGalleryResult
     private void onSelectFromGalleryResult(Intent data) {
 
         Bitmap bm = null;
@@ -237,32 +231,34 @@ public class AddSharedCost extends BaseActivity {
 
         imageView.setImageBitmap(bm);
         imageView.setVisibility(View.VISIBLE);
-    }
+    }//End of method onSelectFromGalleryResult
 
     //Method to save value to Firebase
     private void processSave() {
 
         if (validateFields()) {
-            //String loginUserId = mAuth.getCurrentUser();
             senderEmail = mAuth.getCurrentUser().getEmail();
-
             productName = name.getText().toString();
             receiverEmail = email.getText().toString();
             totalAmount = Float.parseFloat(price.getText().toString());
             friends = friendsInvolve.getText().toString();
-            //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
             saveCosts();
-            //saveCosts(receiverEmail,productName,senderEmail,amountToShare);
         }
     }//End of save method
 
     //Method to sort shared cost value
     private void saveCosts() {
+        //Receipient split by ","
         receipients = receiverEmail.split(",");
         otherFriends = friends.split(",");
+
+        //Round up method
+        Utilities.RoundUpMethod roundUp = new Utilities.RoundUpMethod();
+
+        //Divide according to the size of people added
         amountToShare = totalAmount / (receipients.length + otherFriends.length);
-        amountToShare = Math.round(amountToShare);
+        amountToShare = roundUp.roundUpMethod(amountToShare, 2, BigDecimal.ROUND_HALF_UP);
 
         SharedCost sharedCost = new SharedCost();
         sharedCost.setEmail(receiverEmail);

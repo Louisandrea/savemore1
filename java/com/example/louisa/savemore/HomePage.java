@@ -35,6 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class HomePage extends BaseActivity {
+    //Binding layout component with activity variable
     @Bind(R.id.addSharedCost)
     Button addSharedCost;
     @Bind(R.id.addSavingsGoal)
@@ -48,6 +49,7 @@ public class HomePage extends BaseActivity {
     @Bind(R.id.recyclerViewLayout)
     RecyclerView recyclerView;
 
+    //Recycler View Variables
     private FirebaseRecyclerAdapter<SharedCost, SharedCostHolder> mRecyclerViewAdapter;
     private FirebaseRecyclerAdapter<SavingGoals, SavingGoalHolder> mRecycleViewAdapterSaving;
     LinearLayoutManager linearLayoutManager;
@@ -55,11 +57,12 @@ public class HomePage extends BaseActivity {
     private Query shareCostQuery;
     private Query savingGoalsQuery;
 
-
+    //Global Variable
     Context context;
     String loginUserEmail;
     String userEmail;
 
+    //Navigation Menu
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -79,8 +82,7 @@ public class HomePage extends BaseActivity {
 
         setClickEvent();
 
-
-    }
+    }//End onCreate method
 
     //Method for navigation bar
     private void setUpNavigationBar() {
@@ -106,7 +108,7 @@ public class HomePage extends BaseActivity {
         //Setting the actionbarToggle to drawer layout
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        //calling sync state is necessary or else your hamburger icon wont show up
+        //Calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -186,12 +188,13 @@ public class HomePage extends BaseActivity {
     }//End of the switching view method
 
     @Override
+    //Method onStart for RecyclerView
     public void onStart() {
         super.onStart();
 
         attachRecyclerViewAdapter();
         attachRecyclerViewAdapterSaving();
-    }
+    }//End onStart method
 
 
     //Attach recycler view adapter to the view for shared cost
@@ -202,6 +205,8 @@ public class HomePage extends BaseActivity {
             protected void populateViewHolder(SharedCostHolder viewHolder, final SharedCost sharedCost, final int position) {
                 viewHolder.setContent(sharedCost);
                 RelativeLayout base_layout = (RelativeLayout) viewHolder.itemView.findViewById(R.id.base_layout);
+
+                //OnClickListener - Invoked method updateFriends - Direct user to SharedCostHome Activity
                 base_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -213,7 +218,7 @@ public class HomePage extends BaseActivity {
 
                 });
 
-
+                //OnLongClickListener - Invoked option menu
                 base_layout.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
@@ -222,6 +227,7 @@ public class HomePage extends BaseActivity {
                     }
                 });
 
+                //For other's friends that involved - Prompt option menu
                 if (userEmail.equals(sharedCost.getSender_email())) {
                     viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
@@ -246,6 +252,8 @@ public class HomePage extends BaseActivity {
             protected void populateViewHolder(SavingGoalHolder viewHolder, final SavingGoals savingGoals, final int position) {
                 viewHolder.setContent(savingGoals);
                 RelativeLayout base_layout = (RelativeLayout) viewHolder.itemView.findViewById(R.id.base_layout);
+
+                //OnClickListener - Invoked updateGoals method - Direct user to SavingsGoalHome
                 base_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -257,7 +265,7 @@ public class HomePage extends BaseActivity {
 
                 });
 
-
+                //OnLongClickListener - For friends that involved - Prompt option menu
                 if (userEmail.equals(savingGoals.getSender_email())) {
                     base_layout.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
@@ -274,7 +282,7 @@ public class HomePage extends BaseActivity {
 
     }//End of attach recycler adapter view for saving goals
 
-    //Method Long Click Listener
+    //Method showItemOption - Prompt onLongClickListener
     private void showItemOption(final String key, final SharedCost sharedCost) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final String[] items = new String[]{"Edit", "Delete", "Send Reminder"};
@@ -298,7 +306,7 @@ public class HomePage extends BaseActivity {
         dialog.show();
     }//End of Method
 
-    //Method Long Click Listener for Saving Goals
+    //Method showItemOptionSavingGoals - Prompt onLongClickListener
     private void showItemOptionSavingGoals(final String key, final SavingGoals savingGoals) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final String[] items = new String[]{"Edit", "Delete"};
@@ -315,6 +323,7 @@ public class HomePage extends BaseActivity {
                 }
             }
         });
+
         Dialog dialog = builder.create();
         dialog.show();
     }
@@ -344,6 +353,8 @@ public class HomePage extends BaseActivity {
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //If delete type == 0, will get reference from "sharedCost"
                         if (deleteType == 0) {
                             mDatabase.getReference("sharedCost").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -355,7 +366,10 @@ public class HomePage extends BaseActivity {
                                     }
                                 }
                             });
-                        } else {
+                        }
+
+                        //Else, get reference from "savingGoals"
+                        else if (deleteType == 1){
                             mDatabase.getReference("savingGoals").child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -366,6 +380,10 @@ public class HomePage extends BaseActivity {
                                     }
                                 }
                             });
+                        }
+                        else
+                        {
+                            //do nothing
                         }
 
                     }
@@ -384,7 +402,7 @@ public class HomePage extends BaseActivity {
 
     } //End of method
 
-    //Method for Updating Friends
+    //Method for Display Other Friends
     private void updateFriends(String key, SharedCost sharedCost) {
         Intent intent = new Intent(context, SharedCostHome.class);
         intent.putExtra("key", key);
@@ -395,6 +413,7 @@ public class HomePage extends BaseActivity {
 
 
     @Override
+    //Method onStop for RecyclerViewAdapter
     public void onStop() {
         super.onStop();
         if (mRecyclerViewAdapter != null) {
@@ -403,8 +422,9 @@ public class HomePage extends BaseActivity {
         if (mRecycleViewAdapterSaving != null) {
             mRecycleViewAdapterSaving.cleanup();
         }
-    }
+    }//End onStop Method
 
+    //Method setUpRecyclerView to set up the recyclerview component
     private void setUpRecyclerView() {
         //Recycler View for shared cost
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -418,7 +438,7 @@ public class HomePage extends BaseActivity {
         linearLayoutManager2 = new LinearLayoutManager(context);
         linearLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewLayoutSavingGoals.setLayoutManager(linearLayoutManager2);
-    }
+    }//End of setUpRecyclerView
 
     //Grab data from Firebase
     private void fetchData() {
@@ -432,4 +452,4 @@ public class HomePage extends BaseActivity {
     }//End of method
 
 
-}
+}//End of class

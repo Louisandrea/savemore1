@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 public class Utility {
+    //For Image capture/upload permission
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
