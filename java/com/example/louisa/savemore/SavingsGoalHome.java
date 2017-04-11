@@ -124,6 +124,7 @@ public class SavingsGoalHome extends BaseActivity {
 
     //Method displayContent - display values on Big circle
     private void displayContent() {
+
         title.setText(savingGoals.getDescription() + "   " + "£" + savingGoals.getRemainAmount());
         description.setText(savingGoals.getGoalName());
         calculatePercentage();

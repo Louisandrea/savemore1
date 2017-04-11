@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,7 +87,6 @@ public class EditSavingGoals extends BaseActivity {
 
     }//End ofsetClickEvents method
 
-
     //Method processSave
     private void processSave() {
 
@@ -96,7 +96,6 @@ public class EditSavingGoals extends BaseActivity {
             receiverEmail = email.getText().toString();
             descriptionSave = description.getText().toString();
             totalAmount = Float.parseFloat(price.getText().toString());
-
             saveCosts();
         }
     }//End of processSave method
@@ -104,13 +103,20 @@ public class EditSavingGoals extends BaseActivity {
     //Method saveCosts - Update values
     private void saveCosts() {
         amountToShare = totalAmount / 2;
+
+        Utilities.RoundUpMethod roundUp = new Utilities.RoundUpMethod();
+        amountToShare = roundUp.roundUpMethod(amountToShare, 2, BigDecimal.ROUND_HALF_UP);
+
         SavingGoals savingGoals = new SavingGoals();
+
         savingGoals.setEmail(receiverEmail);
         savingGoals.setGoalName(goalName);
         savingGoals.setGoalAmount(amountToShare);
+        savingGoals.setRemainAmount(amountToShare);
         savingGoals.setDescription(descriptionSave);
         savingGoals.setSender_email(senderEmail);
         savingGoals.setTotal_amount(totalAmount);
+
         senderEmail = cleanEmail(senderEmail);
 
         Map<String, Object> shareValues = savingGoals.toMap();
@@ -127,18 +133,6 @@ public class EditSavingGoals extends BaseActivity {
                     receiverEmail = cleanEmail(receiverEmail);
                     databaseRef.child(key).child(receiverEmail).setValue(true);
                     finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Unable to save at the moment", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        databaseRef.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Goal Shared", Toast.LENGTH_LONG).show();
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Unable to save at the moment", Toast.LENGTH_LONG).show();
                 }
@@ -164,3 +158,27 @@ public class EditSavingGoals extends BaseActivity {
         }
     }//End of validateFields method
 }//End of class
+
+
+
+
+
+
+
+
+
+
+
+
+
+//databaseRef.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+//@Override
+//public void onComplete(@NonNull Task<Void> task) {
+//        if (task.isSuccessful()) {
+//        Toast.makeText(getApplicationContext(), "Goal Shared", Toast.LENGTH_LONG).show();
+//
+//        } else {
+//        Toast.makeText(getApplicationContext(), "Unable to save at the moment", Toast.LENGTH_LONG).show();
+//        }
+//        }
+//        });
